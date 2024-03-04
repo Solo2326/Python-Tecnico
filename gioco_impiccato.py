@@ -1,7 +1,5 @@
 import random 
 
-
-
 def parola_casuale():
   parole = ["cane", "gatto", "casa", "albero", "fuoco", "mare", "cielo", "terra", "sole", "luna", "eccentricità", "secchio", "psicopatia","ellisse"]
   return random.choice(parole)
@@ -11,7 +9,6 @@ def nascondi_parola(parola):
   for lettera in parola:
     parola_nascosta += "*"
   return parola_nascosta
-
 
 def gioco_impiccato():
   # Genera una parola casuale
@@ -42,16 +39,6 @@ def gioco_impiccato():
   else:
     print("Hai perso! La parola era:", parola)
 
-def parola_casuale():
-    parole = ["cane", "gatto", "casa", "albero", "fuoco", "mare", "cielo", "terra", "sole", "luna", "eccentricità", "secchio", "psicopatia", "ellisse"]
-    return random.choice(parole)
-
-def nascondi_parola(parola):
-    parola_nascosta = ""
-    for lettera in parola:
-        parola_nascosta += "*"
-    return parola_nascosta
-
 def raddoppia_consonanti(stringa):
     nuova_stringa = ""
     vocali = "aàèéeiòoùu"
@@ -65,13 +52,30 @@ def raddoppia_consonanti(stringa):
             nuova_stringa += "o"
     return nuova_stringa
 
+def parola_casuale_difficile():
+    parole_difficili = ["python", "programmazione", "intelligenza", "algoritmo", "apprendimento", "sviluppatore", "intelligenza_artificiale", "datascience", "machinelearning", "deeplearning", "neurale", "intelligenza_umana", "complessità"]
+    
+    # Scegli una parola casuale difficoltà
+    parola_difficile = random.choice(parole_difficili)
+    
+    # Applica la funzione raddoppia_consonanti alla parola scelta
+    parola_difficile_modificata = raddoppia_consonanti(parola_difficile)
+    
+    return parola_difficile_modificata
+
+
+
+
+
+
+
 def gioco_impiccato_difficile():
     # Genera una parola casuale
-    parola = parola_casuale()
+    parola = parola_casuale_difficile()
     # Nasconde la parola con consonanti raddoppiate e 'o' nel mezzo
-    parola_nascosta = raddoppia_consonanti(parola)
+    parola_nascosta = nascondi_parola(parola)
     # Imposta il numero di vite
-    vite = 3
+    vite = 10
     # Lista di lettere già usate
     lettere_usate = []
 
@@ -105,7 +109,7 @@ def gioco_impiccato_difficile():
         print("Hai perso! La parola era:", parola)
 
     
-
+#menù
 print("\n Benvenuto nel gioco dell'impiccato! \n")
 selezione = input("\n Iniziamo!! Seleziona 1 per gioco semplice, 2 per gioco difficile, 3 per uscire \n")
 
