@@ -1,12 +1,7 @@
 def raddoppia_consonanti(stringa):
 
-
-
-
   nuova_stringa = ""
   vocali = "aàèéeiòoùu"
-
-
 
   for i, char in enumerate(stringa):
     if char in vocali:
@@ -16,7 +11,6 @@ def raddoppia_consonanti(stringa):
     if i == len(stringa) // 2:
       nuova_stringa += "o"
   return nuova_stringa
-
 
 # Output
 stringa = input("Inserisci una stringa: ")
