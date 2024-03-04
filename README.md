@@ -1,6 +1,10 @@
 # Python-Tecnico
- Esercizi fatti durante il corso
+ Esercizi fatti durante il corso di python.
+
+
+
+ 
  
 
 
- Aggiungere il grado di difficolta del gioco dell'impiccato
+ 
