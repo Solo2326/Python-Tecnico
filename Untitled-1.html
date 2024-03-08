@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+    <title>Esempio di oggetti JavaScript</title>
+</head>
+<body>
+    <script>
+        // Creazione di due oggetti
+        var nominativo = {
+            nome: "Mario",
+            cognome: "Rossi"
+        };
+        var dati = {
+            eta: 39
+        };
+
+        // Assegnazione di `nominativo` come prototipo di `dati`
+        dati.__proto__ = nominativo;
+
+        // Stampa degli oggetti
+        console.log("Dati:", dati);
+        console.log("Nominativo:", nominativo);
+
+        docentr = {
+            materia:'informatica',
+            classi:['3A','4A','5A']
+
+        }
+
+
+
+
+    </script>
+
+</body>
+</html>
