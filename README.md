@@ -3,7 +3,9 @@
 
 
 08-03-2024
-requests
+requests-cambiovaluta
+teleottieni.py
+
  
  
 
