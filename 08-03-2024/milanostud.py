@@ -5,7 +5,7 @@ import json
 def studenti_milano():
     """Ottiene e salva i dati sui laureati a Milano dal portale dati.comune.milano.it."""
 
-    url = "https://dati.comune.milano.it/dataset/ds2714-laureati-negli-atenei-milanesi-anno-2021-suddivisi-per-genere"
+    url = "https://dati.comune.milano.it/dataset/c8cc2240-f6d2-4b8f-a230-1fb22a3ea190/resource/5b2ff8f3-2005-49d3-a8dd-6288a2327a1f/download/ds2714_laureati_negli_atenei_milanesi.json"
     headers = {"Accept": "application/json"}  
 
     response = requests.get(url, headers=headers)

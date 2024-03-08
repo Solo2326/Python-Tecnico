@@ -1,0 +1,58 @@
+[
+    {
+        "AnnoS": 2021,
+        "AteneoCOD": 1501,
+        "AteneoNOME": "Milano",
+        "Femmine": 7218,
+        "Maschi": 4473,
+        "Laureati_totale": 11691
+    },
+    {
+        "AnnoS": 2021,
+        "AteneoCOD": 1502,
+        "AteneoNOME": "Milano Politecnico",
+        "Femmine": 4651,
+        "Maschi": 8177,
+        "Laureati_totale": 12828
+    },
+    {
+        "AnnoS": 2021,
+        "AteneoCOD": 1503,
+        "AteneoNOME": "Milano Bocconi",
+        "Femmine": 2030,
+        "Maschi": 2687,
+        "Laureati_totale": 4717
+    },
+    {
+        "AnnoS": 2021,
+        "AteneoCOD": 1504,
+        "AteneoNOME": "Milano Cattolica",
+        "Femmine": 7565,
+        "Maschi": 3763,
+        "Laureati_totale": 11328
+    },
+    {
+        "AnnoS": 2021,
+        "AteneoCOD": 1505,
+        "AteneoNOME": "Milano IULM",
+        "Femmine": 1464,
+        "Maschi": 469,
+        "Laureati_totale": 1933
+    },
+    {
+        "AnnoS": 2021,
+        "AteneoCOD": 1508,
+        "AteneoNOME": "Milano San Raffaele",
+        "Femmine": 475,
+        "Maschi": 233,
+        "Laureati_totale": 708
+    },
+    {
+        "AnnoS": 2021,
+        "AteneoCOD": 1509,
+        "AteneoNOME": "Milano Bicocca",
+        "Femmine": 4744,
+        "Maschi": 2844,
+        "Laureati_totale": 7588
+    }
+]
