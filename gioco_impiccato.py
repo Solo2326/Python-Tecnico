@@ -63,19 +63,13 @@ def parola_casuale_difficile():
     
     return parola_difficile_modificata
 
-
-
-
-
-
-
 def gioco_impiccato_difficile():
     # Genera una parola casuale
     parola = parola_casuale_difficile()
     # Nasconde la parola con consonanti raddoppiate e 'o' nel mezzo
     parola_nascosta = nascondi_parola(parola)
     # Imposta il numero di vite
-    vite = 10
+    vite = 3
     # Lista di lettere già usate
     lettere_usate = []
 
@@ -119,6 +113,8 @@ elif selezione == "2":
   gioco_impiccato_difficile()
 elif selezione == "3":
   exit()
+else:
+   print("Scelta non valida!")
 
 
 
