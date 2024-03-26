@@ -1,5 +1,3 @@
-#ciclo del menu
-
 def sommapari():
   n = int(input("Inserisci il numero di numeri pari da sommare: "))
   somma = 0
