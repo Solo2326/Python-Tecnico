@@ -1,27 +1,32 @@
 #ciclo del menu
 
 def sommapari():
+  n = int(input("Inserisci il numero di numeri pari da sommare: "))
   somma = 0
-  for numero in range(2, 11, 2):
+  numero = 2
+  while numero <= n:
     somma += numero
-  print("La somma dei primi 5 numeri pari è", somma)
+    numero += 2
+  print("La somma dei primi", n, "numeri pari è", somma)
 
 def sommadispari(n):
 
+  n = int(input("Inserisci il numero di numeri dispari da sommare: "))
   somma = 0
   numero = 1
   while numero <= n:
     somma += numero
     numero += 2
-  return somma
+  print("La somma dei primi", n, "numeri dispari è", somma)
 
 def seriegeo(a, r, n):
-
+  a = float(input("Inserisci il primo termine della serie geometrica: "))
+  r = float(input("Inserisci la ragione della serie geometrica: "))
+  n = int(input("Inserisci il numero di termini della serie geometrica: "))
   if r == 1:
     return a * n
   else:
     return a * (1 - r**n) / (1 - r)
-
 
 def menu():
     print("\n Benvenuto nel menu'!\n")
