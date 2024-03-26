@@ -6,7 +6,7 @@ def prodotto_scalare(v, w):
   for i in range(len(v)):
     prodotto += v[i] * w[i]
   return prodotto
-
+#somma
 def somma(v, w):
   if len(v) != len(w):
     raise ValueError("I vettori devono avere la stessa lunghezza")
@@ -14,7 +14,7 @@ def somma(v, w):
   for i in range(len(v)):
     somma.append(v[i] + w[i])
   return somma
-
+#differenza
 def differenza(v, w):
   if len(v) != len(w):
     raise ValueError("I vettori devono avere la stessa lunghezza")
