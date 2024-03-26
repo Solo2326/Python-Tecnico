@@ -1,10 +1,8 @@
 def sommapari():
   n = int(input("Inserisci il numero di numeri pari da sommare: "))
   somma = 0
-  numero = 2
-  while numero <= n:
+  for numero in range(2, n + 2, 2):
     somma += numero
-    numero += 2
   print("La somma dei primi", n, "numeri pari è", somma)
 
 def sommadispari(n):
