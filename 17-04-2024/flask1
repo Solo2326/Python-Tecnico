@@ -1,0 +1,188 @@
+import mysql.connector
+from mysql.connector import Error
+import getpass
+
+def create_server_connect(host_name, user_name, password):
+    connection = None
+    try:
+        connection = mysql.connector.connect(
+            host=host_name,
+            user=user_name,
+            password=password
+        )
+        print("Connessione al server avvenuta con successo")
+    except mysql.connector.Error as err:
+        print(f"Error: '{err}'")
+    return connection
+
+def create_database(database_name):
+    connection = create_server_connect("localhost", "root", "")
+    if connection:
+        cursor = connection.cursor()
+        create_database_query = f"CREATE DATABASE {database_name}"
+        cursor.execute(create_database_query)
+        connection.commit()
+        print(f"Database '{database_name}' creato correttamente")
+        cursor.close()
+        connection.close()
+    else:
+        print("Errore di connessione al database MySQL.")
+
+def create_alunni_table(database_name):
+    connection = create_server_connect("localhost", "root", "")
+    if connection:
+        cursor = connection.cursor()
+        cursor.execute("USE {}".format(database_name))
+        create_alunni_table_query = """
+            CREATE TABLE alunni (
+                id_alunno INT PRIMARY KEY AUTO_INCREMENT,
+                nome VARCHAR(255) NOT NULL,
+                cognome VARCHAR(255) NOT NULL,
+                telefono VARCHAR(20)
+            );
+        """
+        cursor.execute(create_alunni_table_query)
+        connection.commit()
+        print("Tabella 'alunni' creata correttamente")
+        cursor.close()
+        connection.close()
+    else:
+        print("Errore di connessione al database MySQL.")
+
+def populate_alunni_table(database_name, student_data):
+    connection = create_server_connect("localhost", "root", "")
+    if connection:
+        cursor = connection.cursor()
+        cursor.execute("USE {}".format(database_name))
+
+        for student in student_data:
+            nome = student[0]
+            cognome = student[1]
+            telefono = student[2]
+            insert_query = f"INSERT INTO alunni (nome, cognome, telefono) VALUES ('{nome}', '{cognome}', '{telefono}')"
+            cursor.execute(insert_query)
+
+        connection.commit()
+        print("Dati degli studenti inseriti correttamente")
+        cursor.close()
+        connection.close()
+    else:
+        print("Errore di connessione al database MySQL.")
+
+def fetch_all_students(database_name):
+    connection = create_server_connect("localhost", "root", "")
+    if connection:
+        cursor = connection.cursor()
+        cursor.execute("USE {}".format(database_name))
+        cursor.execute("SELECT * FROM alunni")
+
+        risultati = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        return risultati
+    else:
+        print("Errore di connessione al database MySQL.")
+        return None
+
+def print_database_report(database_name):
+    all_students = fetch_all_students(database_name)
+    if all_students:
+        print("Report del database:")
+        for student in all_students:
+            print(student)
+    else:
+        print("Errore nel recupero degli studenti")
+
+def main():
+    while True:
+        print("\nMenu:")
+        print("1. Creare nuovo database")
+        print("2. Connettersi al database")
+        print("3. Creare una tabella nel database")
+        print("4. Compilare e popolare i campi della tabella")
+        print("5. Avere un report del database")
+        print("6. Uscire")
+
+        choice = input("Scegli un'opzione: ")
+
+        if choice == '1':
+            database_name = input("Inserisci il nome del nuovo database: ")
+            create_database(database_name)
+        elif choice == '2':  # Connettersi al database
+            database_name = input("Inserisci il nome del database a cui connettersi: ")
+            user_name = input("Inserisci username: ")
+            password = getpass.getpass("Inserisci password: ")  # Nasconde l'input della password
+            connection = create_server_connect("localhost", user_name, password)
+
+            if connection:
+                print("Connesso al database '{}' correttamente.".format(database_name))
+                connection.close()  # Chiudi la connessione al termine
+            else:
+                    print("Errore di connessione al database. Controlla le credenziali.")
+
+        elif choice == '3':  # Creare tabella nel database
+            database_name = input("Inserisci il nome del database nel quale creare la tabella: ")
+            table_name = input("Inserisci il nome della tabella: ")
+
+            connection = create_server_connect("localhost", "root", "")
+            if connection:
+                cursor = connection.cursor()
+                cursor.execute("USE {}".format(database_name))
+
+                create_table_query = f"""
+                    CREATE TABLE IF NOT EXISTS {table_name} (
+                        id INT PRIMARY KEY AUTO_INCREMENT,
+                        nome VARCHAR(255) NOT NULL,
+                        cognome VARCHAR(255) NOT NULL,
+                        telefono VARCHAR(255) NOT NULL,
+                    ); 
+                """
+                try:
+                    cursor.execute(create_table_query)
+                    connection.commit()
+                    print(f"Tabella '{table_name}' creata con successo (se non esisteva già)")
+                except mysql.connector.Error as err:
+                    print(f"Errore nella creazione della tabella: '{err}'")
+
+                cursor.close()
+                connection.close()
+            else:
+                print("Errore di connessione al database MySQL.")
+
+        elif choice == '4':  # Compilare e popolare campi della tabella
+            database_name = input("Inserisci il nome del database che contiene la tabella: ")
+            table_name = input("Inserisci il nome della tabella: ")
+
+            # Raccogli i dati da inserire (dovrai strutturare questa parte)
+            # Esempio molto basilare:
+            nome = input("Inserisci il nome: ")
+            cognome = input("Inserisci il cognome: ")
+            telefono = input("Inserisci il telefono: ")
+
+
+            connection = create_server_connect("localhost", "root", "")
+            if connection:
+                cursor = connection.cursor()
+                cursor.execute("USE {}".format(database_name))
+
+                insert_query = f"""
+                    INSERT INTO {table_name} (nome, cognome, telefono)
+                    VALUES (%s, %s, %s)
+                """
+            
+                values = (nome, cognome, telefono)
+
+                try:
+                    cursor.execute(insert_query, values)
+                    connection.commit()
+                    print("Dati inseriti con successo")
+                except mysql.connector.Error as err:
+                    print(f"Errore nell'inserimento dei dati: '{err}'")
+
+                cursor.close()
+                connection.close()
+            else:
+                print("Errore di connessione al database MySQL.")
+
+
+main()
