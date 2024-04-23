@@ -2,6 +2,23 @@ import mysql.connector
 from mysql.connector import Error
 import getpass
 
+
+
+
+def create_server_connect(host_name, user_name, password):
+    connection = None
+    try:
+        connection = mysql.connector.connect(
+            host=host_name,
+            user=user_name,
+            password=password
+        )
+        print("Connessione al server avvenuta con successo")
+    except mysql.connector.Error as err:
+        print(f"Error: '{err}'")
+    return connection
+
+
 def create_tables(database_name):
   connection = create_server_connect("localhost", "root", "")
   if connection:
@@ -40,3 +57,7 @@ def create_tables(database_name):
     connection.close()
   else:
     print("Errore di connessione al database MySQL.")
+
+
+
+
