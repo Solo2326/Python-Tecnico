@@ -113,7 +113,81 @@ def inserisci_proprietario_veicolo():
     print(f"Errore durante l'inserimento: {e}")
     db.rollback()  # Annulla le modifiche in caso di errore
 
-  
+def elimina_proprietario_veicolo():
+
+    # Connessione al database
+    db = connetti_db()
+    # Cursore per eseguire query
+    cursor = db.cursor()
+
+    try:
+        # Richiesta della targa del veicolo da eliminare
+        targa_veicolo = input("Inserisci la targa del veicolo da eliminare: ")
+
+        # Query per ottenere l'ID del proprietario associato alla targa
+        query_id_proprietario = """
+            SELECT p.id
+            FROM proprietari AS p
+            JOIN veicoli AS v ON p.id = v.id_proprietario
+            WHERE v.targa = %s;
+        """
+
+        # Esecuzione della query per l'ID del proprietario
+        cursor.execute(query_id_proprietario, (targa_veicolo,))
+        id_proprietario = cursor.fetchone()
+
+        # Se il proprietario è stato trovato
+        if id_proprietario:
+            id_proprietario = id_proprietario[0]
+
+            # Query per eliminare il veicolo associato alla targa
+            query_elimina_veicolo = """
+                DELETE FROM veicoli
+                WHERE targa = %s;
+            """
+
+            # Esecuzione della query per eliminare il veicolo
+            cursor.execute(query_elimina_veicolo, (targa_veicolo,))
+
+            # Controllo del numero di righe eliminate
+            if cursor.rowcount > 0:
+                print(f"Veicolo con targa {targa_veicolo} eliminato correttamente.")
+
+                # Query per eliminare il proprietario se non ha altri veicoli
+                query_conta_veicoli = """
+                    SELECT COUNT(*)
+                    FROM veicoli
+                    WHERE id_proprietario = %s;
+                """
+
+                # Esecuzione della query per il conteggio dei veicoli
+                cursor.execute(query_conta_veicoli, (id_proprietario,))
+                numero_veicoli = cursor.fetchone()[0]
+
+                if numero_veicoli == 0:
+                    query_elimina_proprietario = """
+                        DELETE FROM proprietari
+                        WHERE id = %s;
+                    """
+
+                    # Esecuzione della query per eliminare il proprietario
+                    cursor.execute(query_elimina_proprietario, (id_proprietario,))
+
+                    if cursor.rowcount > 0:
+                        print(f"Proprietario con ID {id_proprietario} eliminato correttamente.")
+            else:
+                print(f"Veicolo con targa {targa_veicolo} non trovato.")
+
+        else:
+            print(f"Veicolo con targa {targa_veicolo} non trovato.")
+
+    except Exception as e:
+        print(f"Errore durante l'eliminazione: {e}")
+        db.rollback()
+
+    # Commit delle modifiche
+    db.commit()
+
   
 def main():
   
@@ -124,7 +198,8 @@ def main():
     print("\nMenu principale:")
     print("1. Visualizza veicoli Cagliari (1980-2000)")
     print("2. Inserisci nuovo proprietario e veicolo")
-    print("3. Esci")
+    print("3. Elimina proprietario e veicolo")
+    print("4. Esci")
     scelta_utente = input("Inserisci la tua scelta: ")
 
     # Gestisce la scelta dell'utente
@@ -133,6 +208,8 @@ def main():
     elif scelta_utente == "2":
       inserisci_proprietario_veicolo()
     elif scelta_utente == "3":
+      elimina_proprietario_veicolo()
+    elif scelta_utente == "4":
       print("Grazie per aver utilizzato il programma!")
       break
     else:
