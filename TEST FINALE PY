@@ -1,0 +1,142 @@
+import mysql.connector
+
+# Funzione per connettersi al database
+def connetti_db():
+
+  db = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="testfinale"
+  )
+  return db
+
+# Funzione per visualizzare tutti i veicoli immatricolati a Cagliari tra il 1980 e il 2000
+def visualizza_veicoli_cagliari():
+
+  # Connessione al database
+  db = connetti_db()
+  # Cursore per eseguire query
+  cursor = db.cursor()
+  # Query per visualizzare i veicoli
+  query = """
+    SELECT v.modello, v.targa, v.anno_immatricolazione, v.luogo_immatricolazione,
+           p.nome, p.cognome, p.anno_nascita, p.citta_residenza, p.via_residenza
+    FROM veicoli AS v
+    JOIN proprietari AS p ON v.id_proprietario = p.id
+    WHERE v.luogo_immatricolazione = 'Cagliari'
+      AND v.anno_immatricolazione BETWEEN 1980 AND 2000
+    ORDER BY v.anno_immatricolazione;
+  """
+  # Esecuzione della query
+  cursor.execute(query)
+  # Recupero dei risultati
+  risultati = cursor.fetchall()
+  # Stampa dei risultati
+  print("Elenco veicoli immatricolati a Cagliari tra il 1980 e il 2000:")
+  for veicolo in risultati:
+    print(f"  - Modello: {veicolo[0]}")
+    print(f"    Targa: {veicolo[1]}")
+    print(f"    Anno immatricolazione: {veicolo[2]}")
+    print(f"    Luogo immatricolazione: {veicolo[3]}")
+    print(f"    Nome proprietario: {veicolo[4]}")
+    print(f"    Cognome proprietario: {veicolo[5]}")
+    print(f"    Anno nascita proprietario: {veicolo[6]}")
+    print(f"    Città residenza proprietario: {veicolo[7]}")
+    print(f"    Via residenza proprietario: {veicolo[8]}\n")
+    
+  # Chiusura della connessione
+  cursor.close()
+  db.close()
+
+# Funzione per inserire un nuovo proprietario e il relativo veicolo nel database
+def inserisci_proprietario_veicolo():
+
+  # Connessione al database
+  db = connetti_db()
+  # Cursore per eseguire query
+  cursor = db.cursor()
+
+  try:
+    # Richiesta dei dati del proprietario
+    nome_proprietario = input("Inserisci il nome del proprietario: ")
+    cognome_proprietario = input("Inserisci il cognome del proprietario: ")
+    anno_nascita_proprietario = int(input("Inserisci l'anno di nascita del proprietario: "))
+    citta_residenza_proprietario = input("Inserisci la città di residenza del proprietario: ")
+    via_residenza_proprietario = input("Inserisci la via di residenza del proprietario: ")
+
+    # Richiesta dei dati del veicolo
+    modello_veicolo = input("Inserisci il modello del veicolo: ")
+    targa_veicolo = input("Inserisci la targa del veicolo: ")
+    anno_immatricolazione_veicolo = int(input("Inserisci l'anno di immatricolazione del veicolo: "))
+    luogo_immatricolazione_veicolo = input("Inserisci il luogo di immatricolazione del veicolo: ")
+
+    # Creazione della query INSERT per il proprietario
+    query_proprietario = """
+      INSERT INTO proprietari (nome, cognome, anno_nascita, citta_residenza, via_residenza)
+      VALUES (%s, %s, %s, %s, %s);
+    """
+
+    # Esecuzione della query per il proprietario
+    cursor.execute(query_proprietario, (
+      nome_proprietario,
+      cognome_proprietario,
+      anno_nascita_proprietario,
+      citta_residenza_proprietario,
+      via_residenza_proprietario
+    ))
+
+    # Recupero dell'ID del proprietario appena inserito
+    id_proprietario = cursor.lastrowid
+
+    # Creazione della query INSERT per il veicolo
+    query_veicolo = """
+      INSERT INTO veicoli (modello, targa, anno_immatricolazione, luogo_immatricolazione, id_proprietario)
+      VALUES (%s, %s, %s, %s, %s);
+    """
+
+    # Esecuzione della query per il veicolo
+    cursor.execute(query_veicolo, (
+      modello_veicolo,
+      targa_veicolo,
+      anno_immatricolazione_veicolo,
+      luogo_immatricolazione_veicolo,
+      id_proprietario
+    ))
+
+    # Commit delle modifiche
+    db.commit()
+
+    print("Nuovo proprietario e veicolo inseriti correttamente!")
+
+  except Exception as e:
+    print(f"Errore durante l'inserimento: {e}")
+    db.rollback()  # Annulla le modifiche in caso di errore
+
+  
+  
+def main():
+  
+#Funzione principale che gestisce il menu e l'interazione con l'utente.
+  
+  while True:
+    # Visualizza il menu principale
+    print("\nMenu principale:")
+    print("1. Visualizza veicoli Cagliari (1980-2000)")
+    print("2. Inserisci nuovo proprietario e veicolo")
+    print("3. Esci")
+    scelta_utente = input("Inserisci la tua scelta: ")
+
+    # Gestisce la scelta dell'utente
+    if scelta_utente == "1":
+      visualizza_veicoli_cagliari()
+    elif scelta_utente == "2":
+      inserisci_proprietario_veicolo()
+    elif scelta_utente == "3":
+      print("Grazie per aver utilizzato il programma!")
+      break
+    else:
+      print("Scelta non valida. Riprova.")
+if __name__ == "__main__":
+  main()
+  
